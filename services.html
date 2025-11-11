@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Services & Pricing</title>
+    <meta name="description" content="ISave services: Care Plus, Trade‑In, Diagnostics & Repairs, Business Solutions, and financing. Transparent pricing and easy booking."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a class="active" href="services.html">Services</a>
+          </div>
+        </nav>
+        <div class="search"><input id="searchInput" type="search" placeholder="Search services"/></div>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+  <main>
+    <!-- Hidden hero stub to satisfy shared carousel script on non-home pages -->
+    <section class="hero" style="display:none">
+      <div class="carousel"><div class="slide"></div></div>
+    </section>
+      <section class="container">
+        <h2>Services</h2>
+        <p class="sub">Safe, reliable, and professional support — online and in‑store. We serve all customers across South Africa and Southern Africa.</p>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="icon">🛡️</div>
+            <h3>ISave Care Plus</h3>
+            <p>Extended warranty & accidental damage coverage.</p>
+            <ul>
+              <li>iPhone — R 899 / year</li>
+              <li>Mac — R 1,999 / year</li>
+              <li>iPad — R 699 / year</li>
+            </ul>
+            <a class="btn" href="care-plus.html">Learn More</a>
+          </div>
+          <div class="service-card">
+            <div class="icon">🔁</div>
+            <h3>Trade‑In</h3>
+            <p>Swap eligible devices for instant credit toward a new purchase.</p>
+            <ul>
+              <li>Instant estimate — Free</li>
+              <li>Diagnostic report — R 99</li>
+            </ul>
+            <a class="btn" href="trade-in.html">Get Estimate</a>
+          </div>
+          <div class="service-card">
+            <div class="icon">🛠️</div>
+            <h3>Diagnostics & Repairs</h3>
+            <p>Apple‑certified technicians and genuine parts.</p>
+            <ul>
+              <li>Screen replacement — from R 1,499</li>
+              <li>Battery replacement — from R 899</li>
+              <li>Full diagnostic — R 199</li>
+            </ul>
+            <a class="btn" href="repairs.html">Book Repair</a>
+          </div>
+          <div class="service-card">
+            <div class="icon">💼</div>
+            <h3>Business Solutions</h3>
+            <p>Procurement, device management, fleet support, and dedicated pricing.</p>
+            <a class="btn" href="business.html">Talk to Sales</a>
+          </div>
+          <div class="service-card">
+            <div class="icon">⚙️</div>
+            <h3>Device Setup</h3>
+            <p>Data transfer, account sign‑in, updates, and configuration.</p>
+            <ul>
+              <li>New device setup — R 399</li>
+              <li>Data transfer — R 299</li>
+            </ul>
+            <a class="btn" href="setup.html">Book Setup</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="container">
+        <h2>Financing & Monthly Payments</h2>
+        <p class="sub">Apply for monthly payments. Once approved, we schedule a debit every 30 days. See your schedule and simulate payments.</p>
+        <div class="card" style="padding:16px">
+          <div class="actions" style="margin-bottom:12px">
+            <input id="fin-amount" type="number" placeholder="Amount (R)" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <input id="fin-term" type="number" placeholder="Months" style="width:120px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <input id="fin-rate" type="number" placeholder="APR %" style="width:120px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <button id="fin-calc" class="btn btn-primary">Calculate</button>
+          </div>
+          <div id="fin-summary" class="meta"></div>
+          <div id="fin-schedule" style="margin-top:10px"></div>
+          <div class="actions" style="margin-top:10px">
+            <a class="btn btn-primary" href="payments.html">Proceed to Payment</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Disable hero carousel on non-home pages to avoid null errors
+      window.initCarousel = function(){};
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

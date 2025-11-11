@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Apple Watch Catalogue</title>
+    <meta name="description" content="Shop Apple Watch Series and Ultra models with competitive pricing at ISave."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a class="active" href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <div class="search"><input id="searchInput" type="search" placeholder="Search Watch"/></div>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+        <button class="icon-btn" id="cartBtn">🛒 <span class="badge" id="cartCount">0</span></button>
+      </div>
+    </header>
+
+  <main>
+    <!-- Hidden hero stub to satisfy shared carousel script on non-home pages -->
+    <section class="hero" style="display:none">
+      <div class="carousel"><div class="slide"></div></div>
+    </section>
+      <section class="container">
+        <h2>Apple Watch Lineup</h2>
+        <p class="sub">Health, fitness, and style. Explore Series and Ultra models.</p>
+        <div id="watchGrid" class="product-grid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Disable hero carousel on non-home pages to avoid null errors
+      window.initCarousel = function(){};
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

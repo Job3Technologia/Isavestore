@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Business Solutions</title>
+    <meta name="description" content="Procurement, device management, fleet support, and dedicated pricing for businesses and schools."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="container">
+        <h2>Business Solutions</h2>
+        <p class="sub">We partner with organisations to deliver devices, support, and management at scale.</p>
+        <div class="card" style="padding:16px">
+          <h3>What We Offer</h3>
+          <ul>
+            <li>Procurement and bulk ordering</li>
+            <li>Device configuration and management</li>
+            <li>Onsite and remote support</li>
+            <li>Fleet repairs and maintenance</li>
+            <li>Education & NGO pricing</li>
+          </ul>
+          <hr style="margin:12px 0"/>
+          <h3>Talk to Sales</h3>
+          <div class="actions" style="flex-direction:column;gap:8px">
+            <input id="b-company" type="text" placeholder="Company / School" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <input id="b-contact" type="text" placeholder="Contact (email or phone)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <textarea id="b-needs" placeholder="Describe your needs" style="min-height:100px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"></textarea>
+            <button id="b-send" class="btn btn-primary">Request Proposal</button>
+          </div>
+          <div id="b-result" style="margin-top:12px"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.initCarousel = function(){};
+      document.getElementById('b-send').onclick = ()=>{
+        const req = {
+          company: document.getElementById('b-company').value||'',
+          contact: document.getElementById('b-contact').value||'',
+          needs: document.getElementById('b-needs').value||''
+        };
+        if(!req.company || !req.contact || !req.needs){ return alert('Please complete company, contact, and needs.'); }
+        const list = JSON.parse(localStorage.getItem('isave_biz_leads')||'[]');
+        list.unshift({...req, at: Date.now()});
+        localStorage.setItem('isave_biz_leads', JSON.stringify(list));
+        document.getElementById('b-result').innerHTML = '<div class="card" style="padding:12px;background:#ecfdf5;border:1px solid #10b981;color:#065f46">Thanks! Our sales team will reach out.</div>';
+      };
+    </script>
+  </body>
+</html>

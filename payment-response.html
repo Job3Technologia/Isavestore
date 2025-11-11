@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Payment Response</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+      </div>
+    </header>
+    <main>
+      <section class="container">
+        <h2>Payment Status</h2>
+        <div id="statusPanel" class="card" style="padding:16px"></div>
+        <div class="actions" style="margin-top:12px">
+          <a href="index.html" class="btn">Back to Home</a>
+          <a href="payments.html" class="btn btn-primary">Go to Payments</a>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+      </div>
+    </footer>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const status = params.get('status') || 'unknown';
+      const panel = document.getElementById('statusPanel');
+      const styles = {
+        success: 'background:#ecfdf5;border:1px solid #10b981;color:#065f46',
+        failed: 'background:#fef2f2;border:1px solid #ef4444;color:#7f1d1d',
+        unknown: 'background:#f3f4f6;border:1px solid #9ca3af;color:#374151'
+      };
+      panel.setAttribute('style', panel.getAttribute('style') + ';' + (styles[status]||styles.unknown));
+
+      function formatRand(v){
+        return 'R ' + Number(v||0).toLocaleString('en-ZA');
+      }
+
+      if(status === 'success'){
+        // Build countdown UI
+        panel.innerHTML = `
+          <h3>Payment Successful</h3>
+          <p>Thank you! We’re confirming and placing your order with logistics.</p>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:8px">
+            <div class="loading-dot" style="width:16px;height:16px;border-radius:50%;background:#10b981;animation: pulse 1s infinite"></div>
+            <strong id="countdown">02:00</strong>
+          </div>
+          <p class="meta" style="margin-top:6px">You will be redirected to <em>Track Order</em> with your tracking number once the confirmation completes.</p>
+        `;
+
+        let remaining = 120; // seconds
+        const cdEl = document.getElementById('countdown');
+        const timer = setInterval(()=>{
+          remaining--;
+          const m = String(Math.floor(remaining/60)).padStart(2,'0');
+          const s = String(remaining%60).padStart(2,'0');
+          cdEl.textContent = `${m}:${s}`;
+          if(remaining <= 0){
+            clearInterval(timer);
+            // Generate tracking code and persist order
+            const code = 'ISAVE-' + Math.random().toString(36).slice(2,8).toUpperCase();
+            const cart = JSON.parse(localStorage.getItem('isave_cart')||'[]')||[];
+            const amount = cart.reduce((sum,i)=> sum + Number(i.price||0) * Number(i.qty||1), 0);
+            const itemsCount = cart.reduce((sum,i)=> sum + Number(i.qty||1), 0);
+            const placedAt = Date.now();
+            const order = {
+              code,
+              amount,
+              itemsCount,
+              placedAt,
+              statusHistory: [
+                {status:'Confirmed — out of accepting office', at: placedAt},
+                {status:'Put in a truck — en route to nearest collection station', at: placedAt + 2*3600*1000},
+                {status:'Delivery ETA: 3–5 days', at: placedAt + 5*24*3600*1000}
+              ]
+            };
+            const orders = JSON.parse(localStorage.getItem('isave_orders')||'{}');
+            orders[code] = order;
+            localStorage.setItem('isave_orders', JSON.stringify(orders));
+            localStorage.setItem('isave_last_order_code', code);
+            // Redirect to Track Order page
+            location.href = 'track.html?code=' + encodeURIComponent(code);
+          }
+        }, 1000);
+      } else if(status === 'failed') {
+        panel.innerHTML = '<h3>Payment Failed</h3><p>Something went wrong. Please try again or contact support.</p>';
+      } else {
+        panel.innerHTML = '<h3>Status Unknown</h3><p>Please verify your payment details.</p>';
+      }
+    </script>
+  </body>
+</html>

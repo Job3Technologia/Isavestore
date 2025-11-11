@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Device Setup</title>
+    <meta name="description" content="Book a device setup: data transfer, account sign‑in, updates, and configuration."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="container">
+        <h2>Device Setup</h2>
+        <p class="sub">Book a setup session for new or existing devices. We’ll handle data transfer and configuration.</p>
+        <div class="card" style="padding:16px">
+          <div class="actions" style="flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <select id="s-device" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                <option>iPhone</option>
+                <option>Mac</option>
+                <option>iPad</option>
+                <option>Watch</option>
+              </select>
+              <input id="s-model" type="text" placeholder="Model" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <select id="s-type" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                <option>Data Transfer</option>
+                <option>New Device Setup</option>
+                <option>Software Update</option>
+                <option>Configuration & Security</option>
+              </select>
+              <input id="s-date" type="date" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <input id="s-location" type="text" placeholder="Location (store or address)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <textarea id="s-notes" placeholder="Notes" style="min-height:90px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"></textarea>
+            <button id="s-submit" class="btn btn-primary">Book Setup</button>
+          </div>
+          <div id="s-result" style="margin-top:12px"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.initCarousel = function(){};
+      document.getElementById('s-submit').onclick = ()=>{
+        const req = {
+          device: document.getElementById('s-device').value,
+          model: document.getElementById('s-model').value||'',
+          type: document.getElementById('s-type').value,
+          date: document.getElementById('s-date').value||'',
+          location: document.getElementById('s-location').value||'',
+          notes: document.getElementById('s-notes').value||''
+        };
+        if(!req.model || !req.date || !req.location){ return alert('Please complete model, date, and location.'); }
+        const list = JSON.parse(localStorage.getItem('isave_setups')||'[]');
+        list.unshift({...req, at: Date.now()});
+        localStorage.setItem('isave_setups', JSON.stringify(list));
+        document.getElementById('s-result').innerHTML = '<div class="card" style="padding:12px;background:#ecfdf5;border:1px solid #10b981;color:#065f46">Setup booked. We will confirm the slot.</div>';
+      };
+    </script>
+  </body>
+</html>

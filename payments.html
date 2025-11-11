@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Payments & Financing</title>
+    <meta name="description" content="Secure payments and monthly financing. Use our algorithm to schedule monthly debits and track payment status."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+  <main>
+    <!-- Hidden hero stub to satisfy shared carousel script on non-home pages -->
+    <section class="hero" style="display:none">
+      <div class="carousel"><div class="slide"></div></div>
+    </section>
+      <section class="container">
+        <h2>Secure Payment</h2>
+        <p class="sub">Checkout securely. For subscriptions, we schedule a debit every 30 days once approved.</p>
+        <div class="card" style="padding:16px">
+          <p class="meta">Cart total is calculated from your selections. For live payments, configure the link below to your processor (Stripe/Paystack/Yoco). In preview, we simulate the response.</p>
+          <div class="actions">
+            <a id="paymentLink" class="btn btn-primary" target="_blank" rel="noopener">Pay Now</a>
+            <a class="btn" href="payment-response.html?status=success">Simulate Success</a>
+            <a class="btn" href="payment-response.html?status=failed">Simulate Failure</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="container">
+        <h2>Monthly Debit Scheduler</h2>
+        <p class="sub">Set an amount and we generate 30‑day debit dates. This is a front‑end demo; production requires a payment processor and server‑side webhooks.</p>
+        <div class="card" style="padding:16px">
+          <div class="actions" style="margin-bottom:12px">
+            <input id="sched-amount" type="number" placeholder="Amount (R)" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <input id="sched-months" type="number" placeholder="Months" style="width:120px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <button id="sched-generate" class="btn btn-primary">Generate Schedule</button>
+          </div>
+          <div id="sched-list"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Disable hero carousel on non-home pages to avoid null errors
+      window.initCarousel = function(){};
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>

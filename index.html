@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Premium Apple Store</title>
+    <meta name="description" content="ISave Store — Discover the latest Apple products. Premium experience, flexible financing, trade‑in, and expert support."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a class="active" href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+            <!-- Stores removed: online-only -->
+          </div>
+        </nav>
+        <div class="search">
+          <input id="searchInput" type="search" placeholder="Search products, e.g. iPhone 17"/>
+        </div>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+        <button class="icon-btn" id="wishlistBtn" aria-label="Wishlist">❤</button>
+        <button class="icon-btn" id="cartBtn" aria-label="Cart"><span>🛒</span><span class="badge" id="cartCount">0</span></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="container hero" id="home">
+        <div class="carousel" id="heroCarousel">
+          <div class="slides">
+            <div class="slide" style="background-image:url('https://placehold.co/1600x900/0f172a/ffffff?text=iPhone+17+Pro')">
+              <div class="info">
+                <h1>iPhone 17 Pro</h1>
+                <p>Exceptional titanium. A17 Fusion. Pro camera system. Elevate every moment.</p>
+                <div class="actions">
+                  <a class="btn btn-primary" href="#shop">Shop iPhone</a>
+                  <a class="btn" href="#products">View All</a>
+                </div>
+              </div>
+            </div>
+            <div class="slide" style="background-image:url('https://placehold.co/1600x900/111827/ffffff?text=MacBook+Pro+M5')">
+              <div class="info">
+                <h1>MacBook Pro — M5 Performance</h1>
+                <p>Studio-level power, now thinner and lighter. Supercharged by the M5 chip.</p>
+                <div class="actions">
+                  <a class="btn btn-primary" href="#shop">Shop Mac</a>
+                  <a class="btn" href="#services">Explore Services</a>
+                </div>
+              </div>
+            </div>
+            <div class="slide" style="background-image:url('https://placehold.co/1600x900/1f2937/ffffff?text=iPad+Pro')">
+              <div class="info">
+                <h1>iPad Pro</h1>
+                <p>Liquid Retina XDR. Apple Pencil Pro. Desktop-class power in your hands.</p>
+                <div class="actions">
+                  <a class="btn btn-primary" href="#shop">Shop iPad</a>
+                  <a class="btn" href="#products">View All</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="controls">
+            <button id="prevSlide">◀</button>
+            <div class="indicators" id="carouselIndicators"></div>
+            <button id="nextSlide">▶</button>
+          </div>
+        </div>
+        <aside class="promo-cards">
+          <div class="promo-card">
+            <h3>Free Delivery & Returns</h3>
+            <p>Same day & next day options in major centres. Free returns within 30 days.</p>
+          </div>
+          <div class="promo-card">
+            <h3>Trade In & Save</h3>
+            <p>Upgrade and get cash back for eligible devices. Get up to R5,000 off.</p>
+          </div>
+          <div class="promo-card">
+            <h3>Financing Options</h3>
+            <p>Pay over 12, 24 or 36 months with 0% interest. Subject to approval.</p>
+          </div>
+        </aside>
+      </section>
+
+      <section class="container" id="deals">
+        <div class="banner">🎉 Exclusive ISave Deals — Save up to 29% on select iPhones!</div>
+      </section>
+
+      <section class="container" id="products">
+        <h2>Featured Products</h2>
+        <p class="sub">Discover our most popular and innovative products loved by customers.</p>
+        <div id="productGrid" class="product-grid"></div>
+        <div class="view-all">
+          <a href="#shop" class="btn">View All iPhones</a>
+        </div>
+      </section>
+
+      <section class="container" id="services">
+        <h2>Our Services</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="icon">🛡️</div>
+            <h3>ISave Care Plus</h3>
+            <p>Extended warranty & screen repairs. Accidental damage coverage for 2 years.</p>
+            <button class="btn">Learn More</button>
+          </div>
+          <div class="service-card">
+            <div class="icon">🔁</div>
+            <h3>Trade In</h3>
+            <p>Trade your old device for credit toward a new one. Best value guaranteed.</p>
+            <button class="btn">Get Estimate</button>
+          </div>
+          <div class="service-card">
+            <div class="icon">🔧</div>
+            <h3>Tech Support</h3>
+            <p>Book product setup, diagnostics and repairs with our Apple‑certified experts.</p>
+            <button class="btn">Book Now</button>
+          </div>
+          <div class="service-card">
+            <div class="icon">💼</div>
+            <h3>Business Solutions</h3>
+            <p>Special pricing, device management, and dedicated support for businesses.</p>
+            <button class="btn">Explore</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Store locator removed per online-only requirement -->
+    </main>
+
+    <footer>
+      <div class="container footer-grid">
+        <div>
+          <div class="brand"><span class="logo">i</span><span>ISave Store</span></div>
+          <p>Your premium destination for Apple products at unbeatable prices. Experience innovation, quality, and exceptional savings.</p>
+          <div class="socials">
+            <a href="#" aria-label="Facebook">f</a>
+            <a href="#" aria-label="Twitter">t</a>
+            <a href="#" aria-label="LinkedIn">in</a>
+          </div>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="#shop">iPhone</a></li>
+            <li><a href="#">Mac</a></li>
+            <li><a href="#">iPad</a></li>
+            <li><a href="#">Watch</a></li>
+            <li><a href="#">AirPods</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Services</h4>
+          <ul>
+            <li><a href="care-plus.html">ISave Care Plus</a></li>
+            <li><a href="trade-in.html">Trade In</a></li>
+            <li><a href="payments.html">Financing</a></li>
+            <li><a href="business.html">Business Solutions</a></li>
+            <li><a href="education.html">Education Store</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Support</h4>
+          <ul>
+            <li><a href="contact.html">Book Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li>
+            <!-- Store Locator removed -->
+            <li><a href="repairs.html">Repairs</a></li>
+            <li><a href="setup.html">Device Setup</a></li>
+            <li><a href="account.html">My Account</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+          <a href="#">Site Map</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

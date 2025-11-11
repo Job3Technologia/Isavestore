@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — My Account</title>
+    <meta name="description" content="Manage your ISave account: create or sign in, view personal details, deposit wallet funds, and close your account."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+        <button class="icon-btn" id="cartBtn">🛒 <span class="badge" id="cartCount">0</span></button>
+      </div>
+    </header>
+
+    <main>
+      <section class="container">
+        <h2>My Account</h2>
+        <p class="sub">Create your account or sign in. Most personal details are locked after creation to protect your information. You can close your account at any time and create a new one.</p>
+
+        <div id="accountPanel" class="card" style="padding:16px"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      // Render account UI using shared script state
+      (function(){
+        const panel = document.getElementById('accountPanel');
+        function render(){
+          const users = JSON.parse(localStorage.getItem('isave_users')||'{}');
+          const email = localStorage.getItem('isave_session_email');
+          const u = email ? users[email] : null;
+          if(!u){
+            panel.innerHTML = `
+              <h3>Create Account</h3>
+              <div class="actions" style="gap:10px;margin-bottom:8px">
+                <input id="aEmail" type="email" placeholder="Email (used as username)" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                <input id="aPass" type="password" placeholder="Password" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+              </div>
+              <div class="actions" style="gap:10px;margin-bottom:8px">
+                <input id="aFirst" type="text" placeholder="First name" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                <input id="aLast" type="text" placeholder="Last name" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+              </div>
+              <div class="actions" style="gap:10px;margin-bottom:8px">
+                <label class="meta" style="display:flex;align-items:center;gap:10px">Are you in South Africa?
+                  <span style="display:flex;gap:8px;margin-left:8px">
+                    <label><input type="radio" name="inSA" id="inSANo" checked/> No</label>
+                    <label><input type="radio" name="inSA" id="inSAYes"/> Yes</label>
+                  </span>
+                </label>
+              </div>
+              <div id="saPhoneRow" class="actions" style="gap:10px;margin-bottom:8px;display:none">
+                <div style="display:flex;align-items:center;gap:8px;flex:1">
+                  <span class="meta" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb">+27</span>
+                  <input id="aPhoneSA" type="tel" placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                </div>
+              </div>
+              <div id="intlPhoneRow" class="actions" style="gap:10px;margin-bottom:8px">
+                <input id="aPhone" type="tel" placeholder="Mobile number (include country code)" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+              </div>
+              <div class="actions" style="gap:10px;margin-bottom:8px">
+                <input id="aAddr1" type="text" placeholder="Address line 1" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                <input id="aAddr2" type="text" placeholder="Address line 2" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+              </div>
+              <div id="saLocRow" class="actions" style="gap:10px;margin-bottom:8px;display:none">
+                <select id="saProvince" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                  <option value="">Select Province</option>
+                  <option>Gauteng</option>
+                  <option>Western Cape</option>
+                  <option>KwaZulu-Natal</option>
+                  <option>Eastern Cape</option>
+                  <option>Free State</option>
+                  <option>Limpopo</option>
+                  <option>Mpumalanga</option>
+                  <option>North West</option>
+                  <option>Northern Cape</option>
+                </select>
+                <select id="saCity" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                  <option value="">Select City/Town</option>
+                  <option>Johannesburg</option>
+                  <option>Pretoria</option>
+                  <option>Durban</option>
+                  <option>Cape Town</option>
+                  <option>Port Elizabeth</option>
+                  <option>Bloemfontein</option>
+                  <option>Polokwane</option>
+                  <option>Nelspruit</option>
+                  <option>Mahikeng</option>
+                  <option>Kimberley</option>
+                </select>
+                <input id="aPostal" type="text" placeholder="Postal code" style="width:140px;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+              </div>
+              <div id="intlLocRow" class="actions" style="gap:10px;margin-bottom:8px">
+                <input id="aCityText" type="text" placeholder="City" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                <input id="aProvText" type="text" placeholder="Province/Region" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                <input id="aPostal" type="text" placeholder="Postal code" style="width:140px;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+              </div>
+              <p class="meta">Once created, your personal details cannot be edited. To change them later, delete and create a new account.</p>
+              <div class="actions" style="justify-content:flex-end">
+                <button id="aCreate" class="btn btn-primary">Create Account</button>
+              </div>
+              <hr style="margin:18px 0"/>
+              <h3>Already have an account?</h3>
+              <div class="actions" style="gap:10px">
+                <input id="lEmail" type="email" placeholder="Email" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                <input id="lPass" type="password" placeholder="Password" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px" />
+                <button id="aLogin" class="btn">Login</button>
+              </div>
+            `;
+            // Toggle SA vs International fields
+            const yes = panel.querySelector('#inSAYes');
+            const no = panel.querySelector('#inSANo');
+            const saPhone = panel.querySelector('#saPhoneRow');
+            const intlPhone = panel.querySelector('#intlPhoneRow');
+            const saLoc = panel.querySelector('#saLocRow');
+            const intlLoc = panel.querySelector('#intlLocRow');
+            function showSA(on){
+              saPhone.style.display = on?'flex':'none';
+              saLoc.style.display = on?'flex':'none';
+              intlPhone.style.display = on?'none':'flex';
+              intlLoc.style.display = on?'none':'flex';
+            }
+            yes.addEventListener('change', ()=> showSA(true));
+            no.addEventListener('change', ()=> showSA(false));
+            showSA(false);
+            panel.querySelector('#aCreate').onclick = ()=>{
+              const email = String(panel.querySelector('#aEmail').value||'').trim().toLowerCase();
+              const pass = String(panel.querySelector('#aPass').value||'');
+              if(!email || !pass){ alert('Please enter email and password.'); return; }
+              if(users[email]){ alert('An account with this email already exists.'); return; }
+              const inSA = panel.querySelector('#inSAYes').checked;
+              const profile = {
+                first: String(panel.querySelector('#aFirst').value||''),
+                last: String(panel.querySelector('#aLast').value||''),
+                phone: (function(){
+                  if(inSA){
+                    const digits = String(panel.querySelector('#aPhoneSA').value||'').replace(/\D/g,'');
+                    if(digits.length!==10){ alert('South African mobile must be 10 digits.'); return null; }
+                    return '+27'+digits;
+                  }
+                  return String(panel.querySelector('#aPhone').value||'');
+                })(),
+                address: {
+                  line1: String(panel.querySelector('#aAddr1').value||''),
+                  line2: String(panel.querySelector('#aAddr2').value||''),
+                  city: inSA ? String(panel.querySelector('#saCity').value||'') : String(panel.querySelector('#aCityText').value||''),
+                  province: inSA ? String(panel.querySelector('#saProvince').value||'') : String(panel.querySelector('#aProvText').value||''),
+                  postal: String(panel.querySelector('#aPostal').value||'')
+                }
+              };
+              if(profile.phone===null) return; // phone validation failed
+              users[email] = { email, password: pass, profile, wallet: 0, promo: { codeUsed:false, codeActivatedAt:null } };
+              localStorage.setItem('isave_users', JSON.stringify(users));
+              localStorage.setItem('isave_session_email', email);
+              render();
+            };
+            panel.querySelector('#aLogin').onclick = ()=>{
+              const email = String(panel.querySelector('#lEmail').value||'').trim().toLowerCase();
+              const pass = String(panel.querySelector('#lPass').value||'');
+              if(!email || !pass){ alert('Please enter email and password.'); return; }
+              if(!users[email] || users[email].password !== pass){ alert('Invalid credentials.'); return; }
+              localStorage.setItem('isave_session_email', email);
+              render();
+            };
+          } else {
+            const addr = u.profile.address||{};
+            panel.innerHTML = `
+              <h3>Welcome, ${u.profile.first||u.email}</h3>
+              <div class="card" style="padding:12px;margin-bottom:12px">
+                <div class="meta">Email (username): <strong>${u.email}</strong></div>
+                <div class="meta">Name: <strong>${u.profile.first||''} ${u.profile.last||''}</strong></div>
+                <div class="meta">Phone: <strong>${u.profile.phone||''}</strong></div>
+                <div class="meta">Address: <strong>${addr.line1||''} ${addr.line2||''}, ${addr.city||''}, ${addr.province||''}, ${addr.postal||''}</strong></div>
+                <p class="sub">These personal details are locked. To change them, close your account and create a new one.</p>
+              </div>
+              <div class="card" style="padding:12px;margin-bottom:12px">
+                <h3>Wallet</h3>
+                <div class="meta">Balance: <strong>R ${(u.wallet||0).toLocaleString('en-ZA')}</strong></div>
+                <p class="meta">To add real funds, use the Wallet page’s card or crypto deposit.</p>
+                <div class="actions" style="gap:10px;margin-top:8px;flex-wrap:wrap">
+                  <a class="btn btn-primary" href="wallet.html">Deposit via Card/Crypto</a>
+                  <a class="btn" href="wallet.html">View Wallet Activity</a>
+                  <button id="syncWalletBtn" class="btn">Sync Balance</button>
+                </div>
+              </div>
+              <div class="actions" style="gap:10px">
+                <button id="logoutBtn" class="btn">Log Out</button>
+                <button id="closeBtn" class="btn" style="color:#ef4444">Close/Delete Account</button>
+              </div>
+            `;
+            // Sync account wallet with local Wallet balance
+            const syncBtn = panel.querySelector('#syncWalletBtn');
+            if(syncBtn){
+              syncBtn.onclick = ()=>{
+                const bal = Number(localStorage.getItem('isave_wallet_bal')||0);
+                u.wallet = bal;
+                users[email] = u; localStorage.setItem('isave_users', JSON.stringify(users));
+                render();
+              };
+            }
+            panel.querySelector('#logoutBtn').onclick = ()=>{ localStorage.removeItem('isave_session_email'); render(); };
+            panel.querySelector('#closeBtn').onclick = ()=>{
+              if(confirm('Are you sure you want to delete your account? This cannot be undone.')){
+                delete users[email];
+                localStorage.setItem('isave_users', JSON.stringify(users));
+                localStorage.removeItem('isave_session_email');
+                render();
+              }
+            };
+          }
+        }
+        render();
+      })();
+    </script>
+  </body>
+</html>

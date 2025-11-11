@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Track Order</title>
+    <meta name="description" content="Track your ISave order with your tracking number and view live status updates."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="payments.html">Payments</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Hidden hero stub to satisfy shared carousel on non-home pages -->
+      <section class="hero" style="display:none"><div class="carousel"><div class="slide"></div></div></section>
+      <section class="container">
+        <h2>Track Order</h2>
+        <p class="sub">Use your tracking number to view your order status. Please keep your tracking number handy and use it often for updates.</p>
+        <div class="card" style="padding:16px">
+          <div class="actions" style="gap:8px;margin-bottom:12px">
+            <input id="track-code" type="text" placeholder="Enter tracking number (e.g. ISAVE-XXXXXX)" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <button id="track-btn" class="btn btn-primary">Track</button>
+            <button id="copy-btn" class="btn">Copy Last Code</button>
+          </div>
+          <div id="track-result"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms & Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Disable hero carousel on non-home pages
+      window.initCarousel = function(){};
+
+      function renderTimeline(order){
+        const now = Date.now();
+        const steps = order.statusHistory || [];
+        const currentIndex = steps.reduce((idx, step, i)=> now >= step.at ? i : idx, -1);
+        const current = steps[Math.max(0,currentIndex)] || {status:'Order created', at: order.placedAt};
+
+        return `
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div><strong>Tracking:</strong> ${order.code}</div>
+            <div><strong>Total:</strong> R ${Number(order.amount||0).toLocaleString('en-ZA')} • <strong>Items:</strong> ${order.itemsCount}</div>
+            <div class="meta">Placed: ${new Date(order.placedAt).toLocaleString()}</div>
+            <hr/>
+            <h3>Current Status</h3>
+            <p>${current.status}</p>
+            <div class="meta">Updated: ${new Date(current.at).toLocaleString()}</div>
+            <hr/>
+            <h3>Timeline</h3>
+            <ul>
+              ${steps.map(s=>`<li>${new Date(s.at).toLocaleString()} — ${s.status}</li>`).join('')}
+            </ul>
+            <div class="note">Tip: Refer to your tracking number often for live updates.</div>
+          </div>
+        `;
+      }
+
+      function loadByCode(code){
+        const orders = JSON.parse(localStorage.getItem('isave_orders')||'{}');
+        const trades = JSON.parse(localStorage.getItem('isave_trade')||'{}');
+        const order = orders[code] || trades[code];
+        const res = document.getElementById('track-result');
+        if(!order){
+          res.innerHTML = `<div class="alert" style="background:#fef2f2;border:1px solid #ef4444;color:#7f1d1d;padding:12px;border-radius:10px">Order not found. Please verify your tracking number and try again.</div>`;
+          return;
+        }
+        res.innerHTML = renderTimeline(order);
+      }
+
+      const input = document.getElementById('track-code');
+      const btn = document.getElementById('track-btn');
+      const copyBtn = document.getElementById('copy-btn');
+      const params = new URLSearchParams(location.search);
+      const initialCode = params.get('code');
+      if(initialCode){
+        input.value = initialCode;
+        loadByCode(initialCode);
+      } else {
+        const last = localStorage.getItem('isave_last_order_code');
+        if(last){ input.value = last; loadByCode(last); }
+      }
+
+      btn.onclick = ()=>{
+        const code = String(input.value||'').trim().toUpperCase();
+        if(!code){ return; }
+        loadByCode(code);
+      };
+
+      copyBtn.onclick = ()=>{
+        const last = localStorage.getItem('isave_last_order_code') || localStorage.getItem('isave_last_trade_code');
+        if(last){
+          navigator.clipboard?.writeText(last);
+          alert('Tracking code copied: ' + last);
+        } else {
+          alert('No recent tracking code found. Complete a payment to generate one.');
+        }
+      };
+    </script>
+  </body>
+</html>

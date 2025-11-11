@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Trade‑In</title>
+    <meta name="description" content="Trade in your device for instant credit. Schedule a pickup and receive a collection code."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="container">
+        <h2>Trade‑In</h2>
+        <p class="sub">Tell us about your device and choose a collection place and date. We’ll pick it up and apply your credit.</p>
+        <div class="card" style="padding:16px">
+          <div class="actions" style="flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <input id="ti-name" type="text" placeholder="Your Name" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+              <input id="ti-contact" type="text" placeholder="Phone or Email" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <input id="ti-brand" type="text" placeholder="Brand (e.g., Apple)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+              <input id="ti-model" type="text" placeholder="Model (e.g., iPhone 12)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <select id="ti-condition" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                <option>Excellent</option>
+                <option>Good</option>
+                <option>Fair</option>
+                <option>Poor</option>
+              </select>
+              <input id="ti-imei" type="text" placeholder="IMEI/Serial (optional)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <textarea id="ti-notes" placeholder="Notes (damage, accessories, etc.)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px;min-height:90px"></textarea>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <div>
+                <div class="meta" style="margin-bottom:6px">Collection Method</div>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                  <label><input type="radio" name="ti-method" id="ti-method-pickup" checked/> Pickup</label>
+                  <label><input type="radio" name="ti-method" id="ti-method-dropoff"/> Drop‑off at Collection Point</label>
+                </div>
+              </div>
+              <input id="ti-date" type="date" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <div id="ti-pickup-fields" style="display:grid;grid-template-columns:1fr;gap:8px">
+              <input id="ti-location" type="text" placeholder="Pickup Address (street, suburb, city)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <div id="ti-dropoff-fields" style="display:none;grid-template-columns:1fr;gap:8px">
+              <select id="ti-point" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                <option value="Sandton City — Counter 12">Sandton City — Counter 12</option>
+                <option value="Menlyn Park — Counter 4">Menlyn Park — Counter 4</option>
+                <option value="V&A Waterfront — Counter 3">V&A Waterfront — Counter 3</option>
+                <option value="Gateway — Counter 7">Gateway — Counter 7</option>
+              </select>
+            </div>
+            <button id="ti-submit" class="btn btn-primary">Schedule Pickup</button>
+          </div>
+          <div id="ti-result" style="margin-top:12px"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.initCarousel = function(){};
+      function saveTrade(req){
+        const code = 'TRADE-' + Math.random().toString(36).slice(2,8).toUpperCase();
+        const map = JSON.parse(localStorage.getItem('isave_trade')||'{}');
+        map[code] = {...req, code, placedAt: Date.now(), statusHistory:[
+          {status:'Pickup scheduled', at: Date.now()},
+          {status:'Courier assigned', at: Date.now() + 3600*1000},
+          {status:'In transit to evaluation center', at: Date.now() + 24*3600*1000}
+        ]};
+        localStorage.setItem('isave_trade', JSON.stringify(map));
+        localStorage.setItem('isave_last_trade_code', code);
+        return code;
+      }
+      document.getElementById('ti-submit').onclick = ()=>{
+        const req = {
+          name: document.getElementById('ti-name').value||'',
+          contact: document.getElementById('ti-contact').value||'',
+          brand: document.getElementById('ti-brand').value||'',
+          model: document.getElementById('ti-model').value||'',
+          condition: document.getElementById('ti-condition').value||'',
+          imei: document.getElementById('ti-imei').value||'',
+          notes: document.getElementById('ti-notes').value||'',
+          method: document.getElementById('ti-method-dropoff').checked ? 'Drop‑off' : 'Pickup',
+          location: document.getElementById('ti-method-dropoff').checked ? document.getElementById('ti-point').value||'' : document.getElementById('ti-location').value||'',
+          date: document.getElementById('ti-date').value||''
+        };
+        if(!req.name || !req.contact || !req.brand || !req.model || !req.location || !req.date){
+          return alert('Please fill in required details.');
+        }
+        const code = saveTrade(req);
+        const msg = req.method === 'Pickup' ? 'Pickup scheduled' : 'Drop‑off confirmed';
+        document.getElementById('ti-result').innerHTML = `<div class="card" style="padding:12px;background:#ecfeff;border:1px solid #06b6d4;color:#0e7490">${msg}. Your collection code is <strong>${code}</strong>. We’ll contact you to confirm the window.</div>`;
+      };
+      // Toggle method fields
+      const pickupRadio = document.getElementById('ti-method-pickup');
+      const dropoffRadio = document.getElementById('ti-method-dropoff');
+      const pickupFields = document.getElementById('ti-pickup-fields');
+      const dropoffFields = document.getElementById('ti-dropoff-fields');
+      function updateMethod(){
+        const isDrop = dropoffRadio.checked;
+        pickupFields.style.display = isDrop ? 'none' : 'grid';
+        dropoffFields.style.display = isDrop ? 'grid' : 'none';
+      }
+      pickupRadio.addEventListener('change', updateMethod);
+      dropoffRadio.addEventListener('change', updateMethod);
+    </script>
+  </body>
+</html>

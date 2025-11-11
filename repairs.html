@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Repairs</title>
+    <meta name="description" content="Book a repair with Apple‑certified technicians. Choose the issue, device, and preferred date."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="container">
+        <h2>Repairs</h2>
+        <p class="sub">Apple‑certified technicians using genuine parts. Book your repair below.</p>
+        <div class="card" style="padding:16px">
+          <div class="actions" style="flex-direction:column;gap:8px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <select id="r-device" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                <option>iPhone</option>
+                <option>Mac</option>
+                <option>iPad</option>
+                <option>Watch</option>
+              </select>
+              <input id="r-model" type="text" placeholder="Model" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <select id="r-issue" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                <option>Screen Replacement</option>
+                <option>Battery Replacement</option>
+                <option>Water Damage</option>
+                <option>Software Issue</option>
+              </select>
+              <input id="r-date" type="date" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            </div>
+            <input id="r-location" type="text" placeholder="Preferred Location (store or address)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+            <textarea id="r-notes" placeholder="Notes" style="min-height:90px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"></textarea>
+            <button id="r-submit" class="btn btn-primary">Book Repair</button>
+          </div>
+          <div id="r-result" style="margin-top:12px"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.initCarousel = function(){};
+      document.getElementById('r-submit').onclick = ()=>{
+        const req = {
+          device: document.getElementById('r-device').value,
+          model: document.getElementById('r-model').value||'',
+          issue: document.getElementById('r-issue').value,
+          date: document.getElementById('r-date').value||'',
+          location: document.getElementById('r-location').value||'',
+          notes: document.getElementById('r-notes').value||''
+        };
+        if(!req.model || !req.date || !req.location){ return alert('Please complete model, date, and location.'); }
+        const list = JSON.parse(localStorage.getItem('isave_repairs')||'[]');
+        list.unshift({...req, at: Date.now()});
+        localStorage.setItem('isave_repairs', JSON.stringify(list));
+        document.getElementById('r-result').innerHTML = '<div class="card" style="padding:12px;background:#ecfdf5;border:1px solid #10b981;color:#065f46">Repair booked. We will confirm the slot.</div>';
+      };
+    </script>
+  </body>
+</html>

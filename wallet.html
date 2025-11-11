@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>ISave — Wallet</title>
+    <meta name="description" content="Deposit funds to your ISave Wallet via card or crypto to increase your balance and pay for orders."/>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23007aff'/><text x='50' y='58' font-size='50' text-anchor='middle' fill='white' font-family='Arial'>i</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header id="site-header">
+      <div class="nav-row">
+        <a class="brand" href="index.html"><span class="logo">i</span><span>ISave</span></a>
+        <nav>
+          <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="iphones.html">iPhone</a>
+            <a href="mac.html">Mac</a>
+            <a href="watches.html">Watch</a>
+            <a href="services.html">Services</a>
+          </div>
+        </nav>
+        <a class="icon-btn" id="accountBtn" href="account.html" aria-label="Account" title="Account">👤</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="container">
+        <h2>Wallet</h2>
+        <p class="sub">Top up your wallet balance with card or crypto. Funds can be used for purchases and services.</p>
+        <div class="card" style="padding:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div><strong>Current Balance:</strong> <span id="wallet-balance">R 0</span></div>
+            <div class="meta">Balance is stored locally for preview purposes.</div>
+          </div>
+          <hr style="margin:12px 0"/>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+            <div>
+              <h3>Deposit via Card</h3>
+              <div class="actions" style="flex-direction:column;gap:8px">
+                <input id="card-amount" type="number" placeholder="Amount (R)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+                <input id="card-email" type="email" placeholder="Email (for receipt)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+                <input id="card-number" type="text" placeholder="Card Number" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+                <div style="display:flex;gap:8px">
+                  <input id="card-exp" type="text" placeholder="MM/YY" style="flex:1;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+                  <input id="card-cvv" type="text" placeholder="CVV" style="width:120px;padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button id="card-checkout" class="btn btn-primary">Secure Checkout (Test)</button>
+                  <button id="card-deposit" class="btn">Deposit (Manual Test)</button>
+                  <button id="payment-deposit" class="btn">Pay via Payment Link (Real)</button>
+                </div>
+                <div class="meta">Use test card <code>4242 4242 4242 4242</code> · Any CVC · Future expiry.</div>
+              </div>
+            </div>
+            <div>
+              <h3>Deposit via Crypto</h3>
+              <p class="meta">Send to one of our addresses, then confirm your transaction below.</p>
+              <ul class="meta">
+                <li><strong>BTC:</strong> bc1qexampleaddressforbtc000</li>
+                <li><strong>ETH:</strong> 0xexampleaddressforeth000000</li>
+                <li><strong>USDT (TRC‑20):</strong> TXexampleaddressfortrc20</li>
+              </ul>
+              <div class="actions" style="flex-direction:column;gap:8px">
+                <select id="crypto-net" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px">
+                  <option value="BTC">Bitcoin (BTC)</option>
+                  <option value="ETH">Ethereum (ETH)</option>
+                  <option value="USDT">Tether (USDT‑TRC20)</option>
+                </select>
+                <input id="crypto-amount" type="number" placeholder="Amount (R)" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+                <input id="crypto-tx" type="text" placeholder="Transaction Hash" style="padding:10px;border:1px solid #e5e7eb;border-radius:10px"/>
+                <button id="crypto-confirm" class="btn btn-primary">Confirm Deposit</button>
+              </div>
+            </div>
+          </div>
+          <hr style="margin:12px 0"/>
+          <h3>Recent Activity</h3>
+          <div id="wallet-log" class="meta"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container legal">
+        <div>© 2025 ISave Store. All rights reserved.</div>
+        <div class="links">
+          <a href="terms.html">Terms &amp; Conditions</a>
+          <a href="rules.html">Rules</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      window.initCarousel = function(){};
+      function fmt(v){ return 'R ' + Number(v||0).toLocaleString('en-ZA'); }
+      function load(){
+        const bal = Number(localStorage.getItem('isave_wallet_bal')||0);
+        document.getElementById('wallet-balance').textContent = fmt(bal);
+        const log = JSON.parse(localStorage.getItem('isave_wallet_log')||'[]');
+        document.getElementById('wallet-log').innerHTML = log.length ? '<ul>' + log.map(l=>`<li>${new Date(l.at).toLocaleString()} — ${l.type}: ${fmt(l.amount)}${l.note?(' — '+l.note):''}</li>`).join('') + '</ul>' : 'No activity yet.';
+      }
+      function pushLog(entry){
+        const log = JSON.parse(localStorage.getItem('isave_wallet_log')||'[]');
+        log.unshift(entry);
+        localStorage.setItem('isave_wallet_log', JSON.stringify(log));
+      }
+      function setBal(amount){
+        localStorage.setItem('isave_wallet_bal', String(amount));
+        load();
+      }
+      document.getElementById('card-deposit').onclick = ()=>{
+        const amount = Number(document.getElementById('card-amount').value||0);
+        const email = document.getElementById('card-email').value||'';
+        const num = String(document.getElementById('card-number').value||'').replace(/\s+/g,'');
+        const exp = document.getElementById('card-exp').value||'';
+        const cvv = document.getElementById('card-cvv').value||'';
+        if(!amount || amount <= 0){ return alert('Enter a valid amount.'); }
+        if(!email || !/.+@.+\..+/.test(email)){ return alert('Enter a valid email.'); }
+        if(num.length < 12 || !exp || !cvv){ return alert('Enter valid card details.'); }
+        const bal = Number(localStorage.getItem('isave_wallet_bal')||0);
+        setBal(bal + amount);
+        pushLog({type:'Card Deposit (Manual Test)', amount, at: Date.now(), note:`****${num.slice(-4)} · ${email}`});
+        alert('Deposit successful. Balance updated.');
+      };
+      // Simulated secure checkout (credits wallet instantly in test mode)
+      document.getElementById('card-checkout').onclick = ()=>{
+        const amount = Number(document.getElementById('card-amount').value||0);
+        const email = document.getElementById('card-email').value||'';
+        if(!amount || amount <= 0){ return alert('Enter a valid amount.'); }
+        if(!email || !/.+@.+\..+/.test(email)){ return alert('Enter a valid email.'); }
+        const bal = Number(localStorage.getItem('isave_wallet_bal')||0);
+        setBal(bal + amount);
+        pushLog({type:'Card Checkout (Test)', amount, at: Date.now(), note: email});
+        alert('Checkout successful (test). Balance updated.');
+      };
+      document.getElementById('crypto-confirm').onclick = ()=>{
+        const amount = Number(document.getElementById('crypto-amount').value||0);
+        const tx = document.getElementById('crypto-tx').value||'';
+        const net = document.getElementById('crypto-net').value||'CRYPTO';
+        if(!amount || amount <= 0){ return alert('Enter a valid amount.'); }
+        if(!tx || tx.length < 8){ return alert('Enter a valid transaction hash.'); }
+        const bal = Number(localStorage.getItem('isave_wallet_bal')||0);
+        setBal(bal + amount);
+        pushLog({type:`Crypto Deposit (${net})`, amount, at: Date.now(), note: tx});
+        alert('Deposit confirmed. Balance updated.');
+      };
+      // Real payment link for live top-ups
+      const payBtn = document.getElementById('payment-deposit');
+      if(payBtn){
+        payBtn.onclick = ()=>{
+          const amount = Number(document.getElementById('card-amount').value||0);
+          if(!amount || amount <= 0){ return alert('Enter a valid amount.'); }
+          if(typeof PAYMENT_LINK_URL === 'string' && PAYMENT_LINK_URL.startsWith('http')){
+            const qs = new URLSearchParams({amount: amount.toString(), purpose: 'wallet-topup'}).toString();
+            window.open(PAYMENT_LINK_URL + '?' + qs, '_blank');
+          } else {
+            alert('Payment link not configured. Use the Payments page or contact support.');
+          }
+        };
+      }
+      load();
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
